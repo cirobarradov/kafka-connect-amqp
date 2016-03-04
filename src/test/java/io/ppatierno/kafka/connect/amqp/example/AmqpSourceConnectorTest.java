@@ -1,7 +1,10 @@
 package io.ppatierno.kafka.connect.amqp.example;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
 
 import io.vertx.core.Vertx;
@@ -55,6 +58,16 @@ public class AmqpSourceConnectorTest {
 				System.out.println("Sending message to server");
 				
 				Message message = ProtonHelper.message(topic, "Hello World from " + connection.getContainer());
+				
+				ApplicationProperties appProperties = message.getApplicationProperties();
+				if (appProperties == null)
+				{
+					Map value = new HashMap<>();
+					appProperties = new ApplicationProperties(value);
+				}
+				appProperties.getValue().put("partition", 0);
+				
+				message.setApplicationProperties(appProperties);
 				
 				sender.send(ProtonHelper.tag("m1"), message, delivery -> {
 					System.out.println("The message was received by the server");

@@ -54,14 +54,21 @@ public class AmqpSourceTask extends SourceTask {
             	
                 String content = (String) ((AmqpValue) body).getValue();
                 
+                Integer kafkaPartition = null;
+                if (msg.getMessage().getApplicationProperties() != null) {
+                	kafkaPartition = (Integer)msg.getMessage().getApplicationProperties().getValue().get(AmqpSourceConnectorConstant.PARTITION_PROP);
+                }
+                
+                log.info("poll : message on " + kafkaTopic + " partition " + kafkaPartition + " content " + content);
+                
                 SourceRecord record = new SourceRecord(null, null, 
-                										kafkaTopic, null, 
+                										kafkaTopic, kafkaPartition, 
                 										Schema.STRING_SCHEMA, kafkaTopic, 
                 										Schema.STRING_SCHEMA, content);
                 
                 records.add(record);
                 
-                log.info("poll : message on " + kafkaTopic + " content " + content);
+                log.info("poll : message on " + kafkaTopic + " content " + content);                
             }
 		}
 		
