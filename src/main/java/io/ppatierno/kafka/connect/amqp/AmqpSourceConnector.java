@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.connect.connector.ConnectorContext;
 import org.apache.kafka.connect.connector.Task;
 import org.apache.kafka.connect.source.SourceConnector;
@@ -17,36 +18,42 @@ import org.slf4j.LoggerFactory;
  */
 public class AmqpSourceConnector extends SourceConnector {
 	
-	private static final Logger log = LoggerFactory.getLogger(AmqpSourceConnector.class);
+	private static final Logger LOG = LoggerFactory.getLogger(AmqpSourceConnector.class);
 
 	private AmqpSourceConnectorConfig config;
 	
 	@Override
 	public void start(Map<String, String> props) {
-		log.info("AmqpSourceConnector.start");
+		LOG.info("AmqpSourceConnector.start");
 		this.config = new AmqpSourceConnectorConfig(props); 
 	}
 
 	@Override
 	public void stop() {
-		log.info("AmqpSourceConnector.stop");
+		LOG.info("AmqpSourceConnector.stop");
+	}
+
+	@Override
+	public ConfigDef config() {
+		// TODO
+		return null;
 	}
 
 	@Override
 	public Class<? extends Task> taskClass() {
-		log.info("AmqpSourceConnector.taskClass");
+		LOG.info("AmqpSourceConnector.taskClass");
 		return AmqpSourceTask.class;
 	}
 
 	@Override
 	public List<Map<String, String>> taskConfigs(int maxTasks) {
 		
-		log.info("AmqpSourceConnector.taskConfigs maxTasks = " + maxTasks);
+		LOG.info("AmqpSourceConnector.taskConfigs maxTasks = " + maxTasks);
 		
 		ArrayList<Map<String, String>> configs = new ArrayList<>();
 		
 		if (this.config.serverSize() > maxTasks) {
-			log.error("Wrong AMQP Connector configuration");
+			LOG.error("Wrong AMQP Connector configuration");
 		} else {
 			for (int i = 0; i < this.config.serverSize(); i++) {
 				
@@ -72,7 +79,7 @@ public class AmqpSourceConnector extends SourceConnector {
 	@Override
 	public void initialize(ConnectorContext ctx) {
 		super.initialize(ctx);
-		log.info("AmqpSourceConnector.initialize");
+		LOG.info("AmqpSourceConnector.initialize");
 	}
 
 }
