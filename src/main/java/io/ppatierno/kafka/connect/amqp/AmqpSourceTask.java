@@ -142,7 +142,7 @@ public class AmqpSourceTask extends SourceTask {
 
                 this.queue.add(message);
             })
-            .flow(this.receiverCredits)
+            .setPrefetch(this.receiverCredits)
             .open();
 			
 		});
