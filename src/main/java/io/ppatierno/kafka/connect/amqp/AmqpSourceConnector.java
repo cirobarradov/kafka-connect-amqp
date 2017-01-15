@@ -24,13 +24,13 @@ public class AmqpSourceConnector extends SourceConnector {
 	
 	@Override
 	public void start(Map<String, String> props) {
-		LOG.info("AmqpSourceConnector.start");
+		LOG.info("Start AMQP source connector");
 		this.config = new AmqpSourceConnectorConfig(props); 
 	}
 
 	@Override
 	public void stop() {
-		LOG.info("AmqpSourceConnector.stop");
+		LOG.info("Stop AMQP source connector");
 	}
 
 	@Override
@@ -41,19 +41,19 @@ public class AmqpSourceConnector extends SourceConnector {
 
 	@Override
 	public Class<? extends Task> taskClass() {
-		LOG.info("AmqpSourceConnector.taskClass");
+		LOG.info("AMQP source task creation");
 		return AmqpSourceTask.class;
 	}
 
 	@Override
 	public List<Map<String, String>> taskConfigs(int maxTasks) {
 		
-		LOG.info("AmqpSourceConnector.taskConfigs maxTasks = " + maxTasks);
+		LOG.info("AMQP source connector maxTasks = " + maxTasks);
 		
 		ArrayList<Map<String, String>> configs = new ArrayList<>();
 		
 		if (this.config.serverSize() > maxTasks) {
-			LOG.error("Wrong AMQP Connector configuration");
+			LOG.error("Wrong AMQP source connector configuration");
 		} else {
 			for (int i = 0; i < this.config.serverSize(); i++) {
 				
@@ -72,14 +72,13 @@ public class AmqpSourceConnector extends SourceConnector {
 
 	@Override
 	public String version() {
-		
 		return "0";
 	}
 	
 	@Override
 	public void initialize(ConnectorContext ctx) {
 		super.initialize(ctx);
-		LOG.info("AmqpSourceConnector.initialize");
+		LOG.info("AMQP source connector initialized");
 	}
 
 }

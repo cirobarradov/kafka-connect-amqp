@@ -8,16 +8,24 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Configuration class for the AMQP source connector
+ */
 public class AmqpSourceConnectorConfig {
 
-	private static final Logger log = LoggerFactory.getLogger(AmqpSourceConnectorConfig.class);
+	private static final Logger LOG = LoggerFactory.getLogger(AmqpSourceConnectorConfig.class);
 	
 	// list of configuration parameters for each server
 	List<Map<String, String>> configs;
-	
+
+	/**
+	 * Constructor
+	 *
+	 * @param props	properties map for configuration
+     */
 	public AmqpSourceConnectorConfig(Map<String, String> props) {
 		
-		log.info("Getting AMQP Connector configuration");
+		LOG.info("Getting AMQP Connector configuration");
 		
 		this.configs = new ArrayList<>();
 		
@@ -37,9 +45,9 @@ public class AmqpSourceConnectorConfig {
 		
 		// print configuration for each server
 		for (Map<String, String> config : this.configs) {
-			log.info("Configuration for server {}", i++);
+			LOG.info("Configuration for server {}", i++);
 			for (Map.Entry<String, String> prop : config.entrySet()) {
-				log.info("{} = {}", prop.getKey(), prop.getValue());
+				LOG.info("{} = {}", prop.getKey(), prop.getValue());
 			}
 		}
 	}

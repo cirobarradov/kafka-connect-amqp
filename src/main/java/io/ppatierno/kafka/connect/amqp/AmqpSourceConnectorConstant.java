@@ -1,5 +1,8 @@
 package io.ppatierno.kafka.connect.amqp;
 
+/**
+ * AMQP source connector constants
+ */
 public class AmqpSourceConnectorConstant {
 
 	// configuration
