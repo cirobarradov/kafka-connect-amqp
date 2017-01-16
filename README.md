@@ -15,9 +15,15 @@ following command :
 
     export CLASSPATH=/<path-to-repo>/kafka-connect-amqp/target/kafka-connect-amqp-0.0.1-SNAPSHOT-jar-with-dependencies.jar
 
-then it's possible to start the Kafka Connect framework using this connector in the following way :
+For the AMQP source connector, it's possible to start the Kafka Connect framework in the following way :
 
-    bin/connect-standalone.sh config/connect-standalone.properties /<path-to-repo>/kafka-connect-amqp/config/amqp-source.properties
+    bin/connect-standalone.sh /<path-to-repo>/kafka-connect-amqp/connect-standalone.properties /<path-to-repo>/kafka-connect-amqp/config/amqp-source.properties
+
+Instead for the AMQP sink connector :
+
+    bin/connect-standalone.sh /<path-to-repo>/kafka-connect-amqp/connect-standalone.properties /<path-to-repo>/kafka-connect-amqp/config/amqp-sink.properties
+
+Of course, it's possible to start the AMQP source and sink connectors together passing both the properties files on the command line.
 
 ## Debugging
 

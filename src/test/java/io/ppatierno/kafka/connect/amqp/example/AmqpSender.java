@@ -43,11 +43,12 @@ public class AmqpSender {
 
 		ProtonClient client = ProtonClient.create(vertx);
 
-		client.connect("localhost", 5672, res -> {
-			if (res.succeeded()) {
+		client.connect("localhost", 5672, done -> {
+
+			if (done.succeeded()) {
 				System.out.println("Connection successfull");
 
-				ProtonConnection connection = res.result();
+				ProtonConnection connection = done.result();
 				this.sendMessage(vertx, connection);
 			}
 		});

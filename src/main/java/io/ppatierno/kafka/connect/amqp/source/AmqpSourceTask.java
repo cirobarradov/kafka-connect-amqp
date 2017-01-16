@@ -48,8 +48,8 @@ public class AmqpSourceTask extends SourceTask {
 	private Queue<AmqpSourceMessage> queue = new LinkedList<>();
 
 	private String serverHostname;
-	int serverPort;
-	int receiverCredits;
+	private int serverPort;
+	private int receiverCredits;
 
 	@Override
 	public String version() {

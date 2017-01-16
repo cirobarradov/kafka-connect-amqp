@@ -35,7 +35,13 @@ public class AmqpSinkConnectorConfig extends AbstractConfig {
     List<Map<String, String>> configs;
 
     public static ConfigDef baseConfigDef() {
-        return new ConfigDef();
+        return new ConfigDef()
+                .define(AmqpSinkConnectorConstant.AMQP_SERVER_HOSTNAME, ConfigDef.Type.STRING,
+                        AmqpSinkConnectorConstant.AMQP_SERVER_HOSTNAME_DEFAULT, ConfigDef.Importance.HIGH,
+                        "AMQP server hostname")
+                .define(AmqpSinkConnectorConstant.AMQP_SERVER_PORT, ConfigDef.Type.INT,
+                        AmqpSinkConnectorConstant.AMQP_SERVER_PORT_DEFAULT, ConfigDef.Importance.HIGH,
+                        "AMQP server port");
     }
 
     public static final ConfigDef CONFIG_DEF = baseConfigDef();
