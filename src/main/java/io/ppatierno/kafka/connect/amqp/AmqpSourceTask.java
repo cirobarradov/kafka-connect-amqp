@@ -1,5 +1,22 @@
+/*
+ * Copyright 2016 Red Hat Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.ppatierno.kafka.connect.amqp;
 
+import io.ppatierno.kafka.connect.amqp.util.Version;
 import io.vertx.core.Vertx;
 import io.vertx.proton.ProtonConnection;
 import io.vertx.proton.ProtonServer;
@@ -26,14 +43,15 @@ public class AmqpSourceTask extends SourceTask {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(AmqpSourceTask.class);
 
-	Queue<AmqpSourceMessage> queue = new LinkedList<>();
-	
+	private Queue<AmqpSourceMessage> queue = new LinkedList<>();
+
+	private String serverHostname;
 	int serverPort;
 	int receiverCredits;
 
 	@Override
 	public String version() {
-		return "0";
+		return Version.getVersion();
 	}
 
 	@Override
@@ -75,10 +93,12 @@ public class AmqpSourceTask extends SourceTask {
 
 	@Override
 	public void start(Map<String, String> props) {
+
 		LOG.info("Start AMQP source task");
-		
-		this.serverPort = Integer.valueOf(props.get(AmqpSourceConnectorConstant.SERVER_PORT));
-		this.receiverCredits = Integer.valueOf(props.get(AmqpSourceConnectorConstant.SERVER_CREDITS));
+
+		this.serverHostname = props.get(AmqpSourceConnectorConstant.AMQP_SERVER_HOSTNAME);
+		this.serverPort = Integer.valueOf(props.get(AmqpSourceConnectorConstant.AMQP_SERVER_PORT));
+		this.receiverCredits = Integer.valueOf(props.get(AmqpSourceConnectorConstant.AMQP_SERVER_CREDITS));
 		
 		Vertx vertx = Vertx.vertx();
 		
@@ -86,12 +106,12 @@ public class AmqpSourceTask extends SourceTask {
 				.connectHandler((connection) -> {
 					processConnection(connection);
 				})
-				.listen(this.serverPort, (res) -> {
+				.listen(this.serverPort, this.serverHostname, done -> {
 					
-					if (res.succeeded()) {
-						LOG.info("Listening on: " + res.result().actualPort());
+					if (done.succeeded()) {
+						LOG.info("Listening on {}", done.result().actualPort());
 					} else {
-						res.cause().printStackTrace();
+						done.cause().printStackTrace();
 					}
 				});
 	}
@@ -103,21 +123,25 @@ public class AmqpSourceTask extends SourceTask {
 	
 	@Override
 	public void initialize(SourceTaskContext context) {
+
 		super.initialize(context);
 		LOG.info("AMQP source task initialized");
 	}
 	
 	private void processConnection(ProtonConnection connection) {
 
-		connection.openHandler(res ->{
-			LOG.info("Client connected: {}", res.result().getRemoteContainer());
+		connection.openHandler(done ->{
+
+			LOG.info("Client connected: {}", done.result().getRemoteContainer());
 			
-        }).closeHandler(res -> {
-        	LOG.info("Client closing connection: {}", res.result().getRemoteContainer());
-        	res.result().close();
-        	res.result().disconnect();
+        }).closeHandler(done -> {
+
+        	LOG.info("Client closing connection: {}", done.result().getRemoteContainer());
+			done.result().close();
+			done.result().disconnect();
         	
         }).disconnectHandler(conn -> {
+
             LOG.info("Client disconnected: {}", conn.getRemoteContainer());
             conn.disconnect();
             

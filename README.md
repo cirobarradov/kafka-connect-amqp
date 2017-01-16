@@ -13,11 +13,11 @@ In order to use it, the packaging is needed with following Maven command :
 After that, from the Apache Kafka installation directory, it's needed to put the packaged JAR into the Java classpath with
 following command :
 
-    export CLASSPATH=/<path-to-source-code>/kafka-connect-amqp/target/kafka-connect-amqp-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+    export CLASSPATH=/<path-to-repo>/kafka-connect-amqp/target/kafka-connect-amqp-0.0.1-SNAPSHOT-jar-with-dependencies.jar
 
 then it's possible to start the Kafka Connect framework using this connector in the following way :
 
-   bin/connect-standalone.sh config/connect-standalone.properties /<path-to-source-code>/kafka-connect-amqp/src/main/resources/config/amqp.properties
+    bin/connect-standalone.sh config/connect-standalone.properties /<path-to-repo>/kafka-connect-amqp/config/amqp.properties
 
 ## Debugging
 
