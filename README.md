@@ -37,3 +37,7 @@ For debugging the connector from the very early stage (creation and initializati
 needed, in order to have the JVM instance started in a suspended mode until the "remote" session from the IDE is attached on that.
 
     export DEBUG_SUSPEND_FLAG=y
+
+## Limitations
+
+An interesting discussion about possible limitations on an AMQP connector using Kafka Connect can be found [here](http://grokbase.com/t/kafka/users/163zqahn1d/about-amqp-connector-and-kafka-connect-framework).
