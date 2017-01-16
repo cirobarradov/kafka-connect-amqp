@@ -16,28 +16,27 @@
 
 package io.ppatierno.kafka.connect.amqp;
 
-import org.apache.qpid.proton.message.Message;
-
 import io.vertx.proton.ProtonDelivery;
+import org.apache.qpid.proton.message.Message;
 
 /**
  * Class for bringing AMQP message information
  */
 public class AmqpSourceMessage {
 
-	private String kafkaTopic;
+	private String topic;
 	private ProtonDelivery delivery;
 	private Message message;
 
 	/**
 	 * Constructor
 	 *
-	 * @param kafkaTopic	Kafka topic
+	 * @param topic	Kafka topic
 	 * @param delivery	AMQP delivery
 	 * @param message	AMQP raw message
      */
-	public AmqpSourceMessage(String kafkaTopic, ProtonDelivery delivery, Message message) {
-		this.kafkaTopic = kafkaTopic;
+	public AmqpSourceMessage(String topic, ProtonDelivery delivery, Message message) {
+		this.topic = topic;
 		this.delivery = delivery;
 		this.message = message;
 	}
@@ -46,8 +45,8 @@ public class AmqpSourceMessage {
 	 * Kafka topic
 	 * @return
      */
-	public String kafkaTopic() {
-		return this.kafkaTopic;
+	public String topic() {
+		return this.topic;
 	}
 
 	/**

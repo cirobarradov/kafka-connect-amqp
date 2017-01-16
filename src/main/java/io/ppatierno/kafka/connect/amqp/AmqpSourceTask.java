@@ -24,7 +24,9 @@ import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.apache.kafka.connect.source.SourceTask;
 import org.apache.kafka.connect.source.SourceTaskContext;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
+import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,25 +68,45 @@ public class AmqpSourceTask extends SourceTask {
 			Section body = msg.message().getBody();
             if (body instanceof AmqpValue) {
             	
-            	String kafkaTopic = msg.kafkaTopic();
+            	String kafkaTopic = msg.topic();
             	
                 String content = (String) ((AmqpValue) body).getValue();
-                
-                Integer kafkaPartition = null;
-                if (msg.message().getApplicationProperties() != null) {
-                	kafkaPartition = (Integer)msg.message().getApplicationProperties().getValue().get(AmqpSourceConnectorConstant.PARTITION_PROP);
-                }
-                
-                LOG.info("poll : message on " + kafkaTopic + " partition " + kafkaPartition + " content " + content);
-                
-                SourceRecord record = new SourceRecord(null, null, 
-                										kafkaTopic, kafkaPartition, 
-                										Schema.STRING_SCHEMA, kafkaTopic, 
-                										Schema.STRING_SCHEMA, content);
-                
+
+				Object partition = null, key = null;
+
+				// get partition and key from AMQP message annotations
+				// NOTE : they are not mandatory
+				MessageAnnotations messageAnnotations = msg.message().getMessageAnnotations();
+
+				if (messageAnnotations != null) {
+
+					partition = messageAnnotations.getValue().get(Symbol.getSymbol(AmqpSourceConnectorConstant.AMQP_PARTITION_ANNOTATION));
+					key = messageAnnotations.getValue().get(Symbol.getSymbol(AmqpSourceConnectorConstant.AMQP_KEY_ANNOTATION));
+
+					if (partition != null && !(partition instanceof Integer))
+						throw new IllegalArgumentException("The partition annotation must be an Integer");
+
+					if (key != null && !(key instanceof String))
+						throw new IllegalArgumentException("The key annotation must be a String");
+				}
+
+                LOG.info("poll : message on {}, partition {}, content {}", kafkaTopic, partition, content);
+
+				SourceRecord record = null;
+				if (key != null) {
+
+					record = new SourceRecord(null, null,
+							kafkaTopic, (Integer) partition,
+							Schema.STRING_SCHEMA, key,
+							Schema.STRING_SCHEMA, content);
+				} else {
+
+					record = new SourceRecord(null, null,
+							kafkaTopic, (Integer) partition,
+							Schema.STRING_SCHEMA, content);
+				}
+
                 records.add(record);
-                
-                LOG.info("poll : message on " + kafkaTopic + " content " + content);
             }
 		}
 		

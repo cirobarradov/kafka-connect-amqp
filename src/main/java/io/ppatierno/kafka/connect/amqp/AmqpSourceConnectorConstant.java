@@ -30,6 +30,7 @@ public class AmqpSourceConnectorConstant {
 	public static final String AMQP_SERVER_HOSTNAME = "amqp.server.hostname";
 	public static final String AMQP_SERVER_PORT = "amqp.server.port";
 	public static final String AMQP_SERVER_CREDITS = "amqp.server.credits";
-	
-	public static final String PARTITION_PROP = "partition";
+
+	public static final String AMQP_PARTITION_ANNOTATION = "x-opt-bridge.partition";
+	public static final String AMQP_KEY_ANNOTATION = "x-opt-bridge.key";
 }
