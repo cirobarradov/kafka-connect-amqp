@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.ppatierno.kafka.connect.amqp;
+package io.ppatierno.kafka.connect.amqp.source;
 
 import io.ppatierno.kafka.connect.amqp.util.Version;
 import io.vertx.core.Vertx;

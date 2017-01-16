@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.ppatierno.kafka.connect.amqp;
+package io.ppatierno.kafka.connect.amqp.source;
 
 /**
  * AMQP source connector constants

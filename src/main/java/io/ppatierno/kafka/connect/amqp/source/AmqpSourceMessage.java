@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.ppatierno.kafka.connect.amqp;
+package io.ppatierno.kafka.connect.amqp.source;
 
 import io.vertx.proton.ProtonDelivery;
 import org.apache.qpid.proton.message.Message;

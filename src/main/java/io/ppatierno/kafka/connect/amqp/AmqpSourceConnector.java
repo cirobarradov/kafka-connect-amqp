@@ -16,6 +16,8 @@
 
 package io.ppatierno.kafka.connect.amqp;
 
+import io.ppatierno.kafka.connect.amqp.source.AmqpSourceConnectorConfig;
+import io.ppatierno.kafka.connect.amqp.source.AmqpSourceTask;
 import io.ppatierno.kafka.connect.amqp.util.Version;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigException;

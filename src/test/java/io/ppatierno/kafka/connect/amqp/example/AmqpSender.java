@@ -16,7 +16,7 @@
 
 package io.ppatierno.kafka.connect.amqp.example;
 
-import io.ppatierno.kafka.connect.amqp.AmqpSourceConnectorConstant;
+import io.ppatierno.kafka.connect.amqp.source.AmqpSourceConnectorConstant;
 import io.vertx.core.Vertx;
 import io.vertx.proton.ProtonClient;
 import io.vertx.proton.ProtonConnection;

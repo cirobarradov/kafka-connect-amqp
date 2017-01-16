@@ -17,7 +17,7 @@ following command :
 
 then it's possible to start the Kafka Connect framework using this connector in the following way :
 
-    bin/connect-standalone.sh config/connect-standalone.properties /<path-to-repo>/kafka-connect-amqp/config/amqp.properties
+    bin/connect-standalone.sh config/connect-standalone.properties /<path-to-repo>/kafka-connect-amqp/config/amqp-source.properties
 
 ## Debugging
 

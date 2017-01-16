@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.ppatierno.kafka.connect.amqp;
+package io.ppatierno.kafka.connect.amqp.source;
 
 import org.apache.kafka.common.config.AbstractConfig;
 import org.apache.kafka.common.config.ConfigDef;
